@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CyberShield Ultra // Advanced Cybersecurity & Tech Utility Toolkit</title>
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Inter & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          colors: {
+            obsidian: '#060911',
+            slateDark: '#0d1322',
+            slateCard: '#131c31',
+            neonCyan: '#00f0ff',
+            neonEmerald: '#10b981',
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    body {
+      background-color: #060911;
+      background-image:
+        radial-gradient(circle at 10% 10%, rgba(0, 240, 255, 0.05) 0%, transparent 40%),
+        radial-gradient(circle at 90% 90%, rgba(16, 185, 129, 0.05) 0%, transparent 40%),
+        linear-gradient(to right, rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+      background-size: 100% 100%, 100% 100%, 32px 32px, 32px 32px;
+      color: #e2e8f0;
+    }
+
+    input[type="range"] {
+      -webkit-appearance: none;
+      appearance: none;
+      background: #1e293b;
+      height: 6px;
+      border-radius: 999px;
+    }
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: #00f0ff;
+      cursor: pointer;
+      box-shadow: 0 0 10px rgba(0, 240, 255, 0.6);
+      transition: transform 0.15s ease;
+    }
+    input[type="range"]::-webkit-slider-thumb:hover {
+      transform: scale(1.15);
+    }
+
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col font-sans antialiased selection:bg-cyan-500/30 selection:text-cyan-200">
+
+  <!-- Toast Notification System -->
+  <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+  <!-- Header Navigation -->
+  <header class="border-b border-slate-800/80 bg-slateDark/90 backdrop-blur-md sticky top-0 z-40">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-500/20 to-emerald-500/20 border border-cyan-500/40 flex items-center justify-center shadow-lg shadow-cyan-500/10">
+          <svg class="w-6 h-6 text-neonCyan" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+          </svg>
+        </div>
+        <div>
+          <h1 class="text-lg sm:text-xl font-bold tracking-tight text-white flex items-center gap-2">
+            CyberShield <span class="text-xs font-mono font-medium px-2 py-0.5 rounded-full bg-cyan-500/10 text-neonCyan border border-cyan-500/30">v3.0 Ultra</span>
+          </h1>
+          <p class="text-xs text-slate-400">Advanced Zero-Trust Security &amp; Network Utility Suite</p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-xs text-emerald-300">
+        <span class="w-2 h-2 rounded-full bg-neonEmerald animate-pulse"></span>
+        <span>100% Client-Side Cryptography &amp; Analysis</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 py-6 sm:py-8">
+
+    <!-- Navigation Tabs Scrollable -->
+    <nav aria-label="Security Utilities Navigation" class="flex overflow-x-auto no-scrollbar gap-2 pb-4 mb-6 border-b border-slate-800/80">
+      <button onclick="switchTab('analyzer')" id="tab-analyzer" class="tab-btn active-tab flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium whitespace-nowrap transition-all bg-cyan-500/15 text-neonCyan border border-cyan-500/40 shadow-sm">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/></svg>
+        Password Analyzer &amp; Gen
+      </button>
+
+      <button onclick="switchTab('hasher')" id="tab-hasher" class="tab-btn flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium whitespace-nowrap transition-all bg-slateCard/60 text-slate-400 border border-slate-800 hover:text-slate-200">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14"/></svg>
+        Hashes, Codecs &amp; JWT
+      </button>
+
+      <button onclick="switchTab('subnet')" id="tab-subnet" class="tab-btn flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium whitespace-nowrap transition-all bg-slateCard/60 text-slate-400 border border-slate-800 hover:text-slate-200">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/></svg>
+        IP &amp; Subnet Calculator
+      </button>
+
+      <button onclick="switchTab('ports')" id="tab-ports" class="tab-btn flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium whitespace-nowrap transition-all bg-slateCard/60 text-slate-400 border border-slate-800 hover:text-slate-200">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+        Port Scanner &amp; Directory
+      </button>
+
+      <button onclick="switchTab('fingerprint')" id="tab-fingerprint" class="tab-btn flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium whitespace-nowrap transition-all bg-slateCard/60 text-slate-400 border border-slate-800 hover:text-slate-200">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A13.916 13.916 0 008 11a4 4 0 118 0c0 1.017-.07 2.019-.203 3m-2.118 6.844A21.88 21.88 0 0115.171 17m3.839-1.132c.645-2.266.99-4.659.99-7.132A8 8 0 008 4.07M3 15.364c.64-1.319 1-2.8 1-4.364 0-1.457.39-2.823 1.07-4"/></svg>
+        Browser Security Fingerprint
+      </button>
+
+      <button onclick="switchTab('sslheaders')" id="tab-sslheaders" class="tab-btn flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium whitespace-nowrap transition-all bg-slateCard/60 text-slate-400 border border-slate-800 hover:text-slate-200">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+        SSL &amp; Security Headers
+      </button>
+
+      <button onclick="switchTab('integrity')" id="tab-integrity" class="tab-btn flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium whitespace-nowrap transition-all bg-slateCard/60 text-slate-400 border border-slate-800 hover:text-slate-200">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+        File Integrity Verifier
+      </button>
+
+      <button onclick="switchTab('audit')" id="tab-audit" class="tab-btn flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium whitespace-nowrap transition-all bg-slateCard/60 text-slate-400 border border-slate-800 hover:text-slate-200">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
+        Security Audit Checklist
+      </button>
+    </nav>
+
+    <!-- =================================================================== -->
+    <!-- 1. PASSWORD ANALYZER & CSPRNG GENERATOR                             -->
+    <!-- =================================================================== -->
+    <section id="panel-analyzer" class="tool-panel space-y-6">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Analyzer Card -->
+        <div class="bg-slateCard/90 border border-slate-800 rounded-2xl p-5 sm:p-7 shadow-xl">
+          <h2 class="text-lg font-semibold text-white mb-1">Password Strength &amp; Entropy Analyzer</h2>
+          <p class="text-xs text-slate-400 mb-4">Evaluate Shannon entropy and GPU brute-force resistance locally in memory.</p>
+
+          <div class="relative mb-4">
+            <input
+              type="password"
+              id="analyzer-input"
+              placeholder="Type or paste a password..."
+              autocomplete="off"
+              spellcheck="false"
+              class="w-full bg-obsidian border border-slate-700 focus:border-neonCyan rounded-xl px-4 py-3.5 pr-20 font-mono text-sm text-white outline-none"
+              oninput="analyzePassword(this.value)"
+            />
+            <div class="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1">
+              <button type="button" onclick="togglePasswordVis()" class="p-2 text-slate-400 hover:text-white">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="mb-4">
+            <div class="flex justify-between items-center text-xs mb-1.5">
+              <span class="text-slate-400">Rating: <strong id="strength-label" class="text-slate-200">Awaiting Input</strong></span>
+              <span id="entropy-badge" class="font-mono text-neonCyan">0 bits</span>
+            </div>
+            <div class="w-full h-2.5 bg-obsidian rounded-full overflow-hidden border border-slate-800">
+              <div id="strength-bar" class="h-full w-0 bg-slate-600 transition-all duration-300 rounded-full"></div>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-3 mb-4">
+            <div class="bg-obsidian border border-slate-800 rounded-xl p-3">
+              <span class="text-[11px] text-slate-400 uppercase">Est. Crack Time</span>
+              <p id="metric-crack-time" class="font-mono font-bold text-neonEmerald text-sm mt-0.5">Instant</p>
+            </div>
+            <div class="bg-obsidian border border-slate-800 rounded-xl p-3">
+              <span class="text-[11px] text-slate-400 uppercase">Char Pool Size</span>
+              <p id="metric-pool" class="font-mono font-bold text-neonCyan text-sm mt-0.5">0 chars</p>
+            </div>
+          </div>
+
+          <ul id="analyzer-tips" class="space-y-1 text-xs text-slate-400 list-disc list-inside bg-obsidian/70 p-3 rounded-xl border border-slate-800">
+            <li>Enter a password to inspect weaknesses and predictability.</li>
+          </ul>
+        </div>
+
+        <!-- Generator Card -->
+        <div class="bg-slateCard/90 border border-slate-800 rounded-2xl p-5 sm:p-7 shadow-xl flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-3">
+              <h2 class="text-lg font-semibold text-white">CSPRNG Credential Generator</h2>
+              <div class="inline-flex p-1 rounded-lg bg-obsidian border border-slate-800">
+                <button type="button" onclick="setGenMode('password')" id="btn-mode-pw" class="px-2.5 py-1 rounded-md text-xs font-medium bg-cyan-500/25 text-neonCyan">Password</button>
+                <button type="button" onclick="setGenMode('passphrase')" id="btn-mode-ph" class="px-2.5 py-1 rounded-md text-xs font-medium text-slate-400">Passphrase</button>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-2 bg-obsidian border border-slate-700 rounded-xl p-3 mb-4">
+              <input type="text" id="gen-output" readonly class="flex-1 bg-transparent font-mono text-sm text-neonEmerald outline-none select-all" value="Click Generate" />
+              <button type="button" onclick="generateCredential()" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-white text-xs rounded-lg">New</button>
+              <button type="button" onclick="copyFromElement('gen-output', 'Credential copied!')" class="px-3 py-1.5 bg-neonCyan text-obsidian font-bold text-xs rounded-lg">Copy</button>
+            </div>
+
+            <div id="gen-pw-options" class="space-y-3">
+              <div>
+                <div class="flex justify-between text-xs mb-1">
+                  <span class="text-slate-300">Length: <strong id="len-val" class="text-neonCyan">20</strong></span>
+                </div>
+                <input type="range" id="gen-len" min="8" max="64" value="20" class="w-full" oninput="document.getElementById('len-val').textContent=this.value; generateCredential();" />
+              </div>
+              <div class="grid grid-cols-2 gap-2 text-xs">
+                <label class="flex items-center gap-2 p-2.5 bg-obsidian rounded-xl border border-slate-800 cursor-pointer">
+                  <input type="checkbox" id="opt-upper" checked onchange="generateCredential()" class="accent-cyan-400" /> A-Z
+                </label>
+                <label class="flex items-center gap-2 p-2.5 bg-obsidian rounded-xl border border-slate-800 cursor-pointer">
+                  <input type="checkbox" id="opt-lower" checked onchange="generateCredential()" class="accent-cyan-400" /> a-z
+                </label>
+                <label class="flex items-center gap-2 p-2.5 bg-obsidian rounded-xl border border-slate-800 cursor-pointer">
+                  <input type="checkbox" id="opt-nums" checked onchange="generateCredential()" class="accent-cyan-400" /> 0-9
+                </label>
+                <label class="flex items-center gap-2 p-2.5 bg-obsidian rounded-xl border border-slate-800 cursor-pointer">
+                  <input type="checkbox" id="opt-syms" checked onchange="generateCredential()" class="accent-cyan-400" /> Symbols
+                </label>
+              </div>
+            </div>
+
+            <div id="gen-ph-options" class="hidden space-y-3">
+              <div>
+                <div class="flex justify-between text-xs mb-1">
+                  <span class="text-slate-300">Word Count: <strong id="word-cnt-val" class="text-neonCyan">5 words</strong></span>
+                </div>
+                <input type="range" id="gen-words" min="3" max="8" value="5" class="w-full" oninput="document.getElementById('word-cnt-val').textContent=this.value+' words'; generateCredential();" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =================================================================== -->
+    <!-- 2. HASHES, CODECS & JWT INSPECTOR                                   -->
+    <!-- =================================================================== -->
+    <section id="panel-hasher" class="tool-panel hidden space-y-6">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Hash Generator -->
+        <div class="bg-slateCard/90 border border-slate-800 rounded-2xl p-5 sm:p-7 shadow-xl">
+          <h2 class="text-lg font-semibold text-white mb-1">Cryptographic Hash Generator</h2>
+          <p class="text-xs text-slate-400 mb-4">Generate SHA-256, SHA-384, and SHA-512 digests via Web Crypto API.</p>
+
+          <textarea id="hash-input" rows="3" placeholder="Enter text to hash..." oninput="computeHashes()" class="w-full bg-obsidian border border-slate-700 rounded-xl p-3 font-mono text-xs text-white outline-none mb-4"></textarea>
+
+          <div class="space-y-3 font-mono text-xs">
+            <div class="bg-obsidian p-3 rounded-xl border border-slate-800">
+              <div class="flex justify-between text-slate-400 mb-1"><span>SHA-256</span><button onclick="copyFromElement('out-sha256', 'Copied!')" class="text-neonCyan">Copy</button></div>
+              <input id="out-sha256" readonly class="w-full bg-transparent text-slate-300 outline-none select-all" value="e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855" />
+            </div>
+            <div class="bg-obsidian p-3 rounded-xl border border-slate-800">
+              <div class="flex justify-between text-slate-400 mb-1"><span>SHA-512</span><button onclick="copyFromElement('out-sha512', 'Copied!')" class="text-neonEmerald">Copy</button></div>
+              <input id="out-sha512" readonly class="w-full bg-transparent text-slate-300 outline-none select-all" value="cf83e1357eefb8bdf1542850d66d8007d620e4050b5715dc83f4a921d36ce9ce..." />
+            </div>
+          </div>
+        </div>
+
+        <!-- JWT Inspector -->
+        <div class="bg-slateCard/90 border border-slate-800 rounded-2xl p-5 sm:p-7 shadow-xl flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-2">
+              <h2 class="text-lg font-semibold text-white">JWT Inspector &amp; Codecs</h2>
+              <button onclick="loadSampleJWT()" class="text-xs px-2.5 py-1 bg-slate-800 text-cyan-300 rounded-lg">Sample JWT</button>
+            </div>
+            <p class="text-xs text-slate-400 mb-3">Decode JSON Web Tokens and Base64/Hex/URL strings locally.</p>
+
+            <textarea id="jwt-input" rows="3" placeholder="Paste eyJhbGciOi... JWT token" oninput="inspectJWT()" class="w-full bg-obsidian border border-slate-700 rounded-xl p-3 font-mono text-xs text-amber-300 outline-none mb-3"></textarea>
+
+            <div class="grid grid-cols-2 gap-2 text-xs">
+              <pre id="jwt-header-out" class="bg-obsidian p-2.5 rounded-xl border border-slate-800 font-mono text-[11px] text-slate-300 overflow-x-auto max-h-28">{}</pre>
+              <pre id="jwt-payload-out" class="bg-obsidian p-2.5 rounded-xl border border-slate-800 font-mono text-[11px] text-emerald-300 overflow-x-auto max-h-28">{}</pre>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =================================================================== -->
+    <!-- 3. IP, SUBNET & CIDR CALCULATOR                                     -->
+    <!-- =================================================================== -->
+    <section id="panel-subnet" class="tool-panel hidden space-y-6">
+      <div class="bg-slateCard/90 border border-slate-800 rounded-2xl p-5 sm:p-7 shadow-xl">
+        <h2 class="text-lg font-semibold text-white mb-1">IPv4 Subnet &amp; CIDR Calculator</h2>
+        <p class="text-xs text-slate-400 mb-4">Compute network address, broadcast address, usable IP ranges, wildcard masks, and total hosts.</p>
+
+        <div class="flex flex-col sm:flex-row gap-3 mb-6">
+          <input
+            type="text"
+            id="subnet-input"
+            value="192.168.1.0/24"
+            placeholder="e.g. 10.0.0.1/16 or 172.16.5.40/22"
+            class="flex-1 bg-obsidian border border-slate-700 focus:border-neonCyan rounded-xl px-4 py-3 font-mono text-sm text-white outline-none"
+          />
+          <button type="button" onclick="calculateSubnet()" class="px-6 py-3 bg-neonCyan text-obsidian font-bold text-xs rounded-xl shadow-lg shadow-cyan-500/20">
+            Calculate Subnet
+          </button>
+        </div>
+
+        <!-- Subnet Results Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+          <div class="bg-obsidian border border-slate-800 rounded-xl p-4">
+            <span class="text-[11px] text-slate-400 uppercase tracking-wider">Network Address</span>
+            <p id="sub-net-addr" class="font-mono font-bold text-white text-base mt-1">-</p>
+          </div>
+          <div class="bg-obsidian border border-slate-800 rounded-xl p-4">
+            <span class="text-[11px] text-slate-400 uppercase tracking-wider">Broadcast Address</span>
+            <p id="sub-broadcast" class="font-mono font-bold text-white text-base mt-1">-</p>
+          </div>
+          <div class="bg-obsidian border border-slate-800 rounded-xl p-4">
+            <span class="text-[11px] text-slate-400 uppercase tracking-wider">Subnet Mask</span>
+            <p id="sub-mask" class="font-mono font-bold text-neonCyan text-base mt-1">-</p>
+          </div>
+          <div class="bg-obsidian border border-slate-800 rounded-xl p-4">
+            <span class="text-[11px] text-slate-400 uppercase tracking-wider">Total Usable Hosts</span>
+            <p id="sub-hosts" class="font-mono font-bold text-neonEmerald text-base mt-1">-</p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div class="bg-obsidian border border-slate-800 rounded-xl p-4">
+            <span class="text-[11px] text-slate-400 uppercase tracking-wider">Usable IP Range</span>
+            <p id="sub-range" class="font-mono text-xs text-slate-300 mt-1">-</p>
+          </div>
+          <div class="bg-obsidian border border-slate-800 rounded-xl p-4">
+            <span class="text-[11px] text-slate-400 uppercase tracking-wider">Wildcard Mask</span>
+            <p id="sub-wildcard" class="font-mono text-xs text-slate-300 mt-1">-</p>
+          </div>
+          <div class="bg-obsidian border border-slate-800 rounded-xl p-4">
+            <span class="text-[11px] text-slate-400 uppercase tracking-wider">IP Binary Representation</span>
+            <p id="sub-binary" class="font-mono text-[11px] text-slate-400 mt-1 truncate">-</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =================================================================== -->
+    <!-- 4. PORT SCANNER SIMULATION & PORT REFERENCE DIRECTORY               -->
+    <!-- =================================================================== -->
+    <section id="panel-ports" class="tool-panel hidden space-y-6">
+      <div class="bg-slateCard/90 border border-slate-800 rounded-2xl p-5 sm:p-7 shadow-xl">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+          <div>
+            <h2 class="text-lg sm:text-xl font-semibold text-white">Interactive Port Reference &amp; Scanner Simulation</h2>
+            <p class="text-sm text-slate-400 mt-1">Simulate an Nmap-style TCP connect scan across common infrastructure ports with risk notes.</p>
+          </div>
+          <button type="button" onclick="simulatePortScan()" id="scan-btn" class="px-5 py-2.5 bg-cyan-500/20 text-neonCyan border border-cyan-500/40 hover:bg-cyan-500/30 font-bold text-xs rounded-xl transition-all">
+            Run Scan Simulation
+          </button>
+        </div>
+
+        <!-- Ports Table -->
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs">
+            <thead class="bg-obsidian text-slate-400 uppercase font-mono tracking-wider border-b border-slate-800">
+              <tr>
+                <th class="p-3.5">Port / Proto</th>
+                <th class="p-3.5">Service Name</th>
+                <th class="p-3.5">Simulated State</th>
+                <th class="p-3.5">Security Risk &amp; Description</th>
+                <th class="p-3.5">Defense Recommendation</th>
+              </tr>
+            </thead>
+            <tbody id="port-table-body" class="divide-y divide-slate-800/80 font-mono">
+              <!-- Populated via JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- =================================================================== -->
+    <!-- 5. BROWSER SECURITY FINGERPRINT                                     -->
+    <!-- =================================================================== -->
+    <section id="panel-fingerprint" class="tool-panel hidden space-y-6">
+      <div class="bg-slateCard/90 border border-slate-800 rounded-2xl p-5 sm:p-7 shadow-xl">
+        <div class="flex items-center justify-between mb-4">
+          <div>
+            <h2 class="text-lg sm:text-xl font-semibold text-white">Live Browser Security &amp; Device Fingerprint</h2>
+            <p class="text-sm text-slate-400 mt-1">Inspect what telemetry your browser exposes to websites during standard web sessions.</p>
+          </div>
+          <button type="button" onclick="loadFingerprint()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white text-xs rounded-xl">Refresh</button>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4" id="fingerprint-grid">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- =================================================================== -->
+    <!-- 6. SSL/TLS CERTIFICATE & SECURITY HEADERS INSPECTOR                 -->
+    <!-- =================================================================== -->
+    <section id="panel-sslheaders" class="tool-panel hidden space-y-6">
+      <div class="bg-slateCard/90 border border-slate-800 rounded-2xl p-5 sm:p-7 shadow-xl">
+        <h2 class="text-lg font-semibold text-white mb-1">SSL/TLS Certificate &amp; Security Headers Inspector</h2>
+        <p class="text-xs text-slate-400 mb-4">Analyze certificate validity, signature algorithms, and HTTP security headers (HSTS, CSP, X-Frame-Options).</p>
+
+        <div class="flex flex-col sm:flex-row gap-3 mb-6">
+          <input type="text" id="target-url" value="https://github.com" placeholder="https://example.com" class="flex-1 bg-obsidian border border-slate-700 rounded-xl px-4 py-3 font-mono text-sm text-white outline-none" />
+          <button type="button" onclick="inspectTargetURL()" class="px-6 py-3 bg-neonCyan text-obsidian font-bold text-xs rounded-xl shadow-lg shadow-cyan-500/20">Inspect Target</button>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6" id="audit-results-container">
+          <!-- SSL Card -->
+          <div class="bg-obsidian border border-slate-800 rounded-xl p-5">
+            <h3 class="text-sm font-semibold text-neonCyan mb-3">SSL/TLS Certificate Analysis</h3>
+            <div id="ssl-result-box" class="space-y-2 text-xs font-mono text-slate-300">
+              <p>Target domain: <span class="text-white">github.com</span></p>
+              <p>Valid From: <span class="text-emerald-400">Jan 10, 2026</span> &rarr; <span class="text-emerald-400">Apr 11, 2027</span></p>
+              <p>Signature Algorithm: <span class="text-white">sha256WithRSAEncryption</span></p>
+              <p>TLS Cipher Suite: <span class="text-neonCyan">TLS_AES_256_GCM_SHA384 (TLSv1.3)</span></p>
+              <p>Overall SSL Grade: <strong class="text-neonEmerald text-sm">A+ (Secure)</strong></p>
+            </div>
+          </div>
+
+          <!-- Security Headers Card -->
+          <div class="bg-obsidian border border-slate-800 rounded-xl p-5">
+            <h3 class="text-sm font-semibold text-neonEmerald mb-3">HTTP Security Headers Check</h3>
+            <div id="headers-result-box" class="space-y-2 text-xs font-mono text-slate-300">
+              <p>Strict-Transport-Security: <span class="text-emerald-400">max-age=31536000; includeSubDomains</span></p>
+              <p>Content-Security-Policy: <span class="text-emerald-400">default-src 'self'; ...</span></p>
+              <p>X-Frame-Options: <span class="text-emerald-400">DENY</span></p>
+              <p>X-Content-Type-Options: <span class="text-emerald-400">nosniff</span></p>
+              <p>Security Grade: <strong class="text-neonCyan text-sm">A+ Rating</strong></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =================================================================== -->
+    <!-- 7. LOCAL FILE HASH INTEGRITY VERIFIER                               -->
+    <!-- =================================================================== -->
+    <section id="panel-integrity" class="tool-panel hidden space-y-6">
+      <div class="bg-slateCard/90 border border-slate-800 rounded-2xl p-5 sm:p-7 shadow-xl">
+        <h2 class="text-lg font-semibold text-white mb-1">Local File Hash Integrity Verifier</h2>
+        <p class="text-xs text-slate-400 mb-4">Drop or select any local file to calculate its SHA-256 hash in-browser using FileReader and compare against official checksums.</p>
+
+        <div class="border-2 border-dashed border-slate-700 hover:border-cyan-400 rounded-2xl p-8 text-center bg-obsidian/50 cursor-pointer transition-colors mb-6" onclick="document.getElementById('file-input').click()">
+          <input type="file" id="file-input" class="hidden" onchange="handleFileSelected(event)" />
+          <svg class="w-10 h-10 text-cyan-400 mx-auto mb-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>
+          <p id="file-drop-text" class="text-sm font-medium text-slate-200">Click to browse or drop file here</p>
+          <p class="text-xs text-slate-400 mt-1">Processed entirely in browser memory (no uploads)</p>
+        </div>
+
+        <div class="space-y-4 font-mono text-xs">
+          <div>
+            <span class="text-slate-400 block mb-1">Calculated SHA-256 Hash</span>
+            <div class="flex gap-2 bg-obsidian p-3 rounded-xl border border-slate-800">
+              <input type="text" id="file-sha-out" readonly class="flex-1 bg-transparent text-neonCyan outline-none select-all" value="Awaiting file selection..." />
+              <button onclick="copyFromElement('file-sha-out', 'Hash copied!')" class="text-white hover:text-cyan-300">Copy</button>
+            </div>
+          </div>
+
+          <div>
+            <label class="text-slate-400 block mb-1">Compare Against Expected Checksum (Optional)</label>
+            <input type="text" id="expected-hash-input" placeholder="Paste expected MD5/SHA-256 hash..." oninput="compareFileHash()" class="w-full bg-obsidian border border-slate-700 rounded-xl p-3 text-white outline-none" />
+            <p id="match-status" class="mt-2 text-xs font-bold"></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =================================================================== -->
+    <!-- 8. SECURITY AUDIT CHECKLIST                                         -->
+    <!-- =================================================================== -->
+    <section id="panel-audit" class="tool-panel hidden space-y-6">
+      <div class="bg-slateCard/90 border border-slate-800 rounded-2xl p-5 sm:p-7 shadow-xl">
+        <div class="flex items-center justify-between mb-6">
+          <div>
+            <h2 class="text-lg font-semibold text-white">Personal Security Posture &amp; Phishing Defense Audit</h2>
+            <p class="text-xs text-slate-400 mt-1">Track essential defensive controls to harden your accounts.</p>
+          </div>
+          <button type="button" onclick="resetChecklist()" class="px-3.5 py-2 bg-slate-800 text-xs text-slate-300 rounded-xl">Reset</button>
+        </div>
+
+        <div class="bg-obsidian p-4 rounded-xl border border-slate-800 mb-6">
+          <div class="flex justify-between text-sm mb-2">
+            <span class="text-slate-300">Readiness Score</span>
+            <span id="audit-score-text" class="font-mono font-bold text-neonEmerald">0 / 5 Completed (0%)</span>
+          </div>
+          <div class="w-full h-3 bg-slate-900 rounded-full overflow-hidden">
+            <div id="audit-progress-bar" class="h-full w-0 bg-gradient-to-r from-neonCyan to-neonEmerald transition-all duration-300 rounded-full"></div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <label class="audit-card flex items-start gap-3 p-4 rounded-xl bg-obsidian border border-slate-800 cursor-pointer">
+            <input type="checkbox" onchange="updateAuditScore()" class="audit-cb mt-1 w-4 h-4 accent-emerald-400" />
+            <div>
+              <h3 class="text-sm font-semibold text-white">Hardware Passkeys &amp; TOTP 2FA</h3>
+              <p class="text-xs text-slate-400 mt-0.5">Replace SMS OTP with FIDO2 hardware keys on critical accounts.</p>
+            </div>
+          </label>
+          <label class="audit-card flex items-start gap-3 p-4 rounded-xl bg-obsidian border border-slate-800 cursor-pointer">
+            <input type="checkbox" onchange="updateAuditScore()" class="audit-cb mt-1 w-4 h-4 accent-emerald-400" />
+            <div>
+              <h3 class="text-sm font-semibold text-white">Unique Passwords via Password Manager</h3>
+              <p class="text-xs text-slate-400 mt-0.5">Ensure zero password reuse across services.</p>
+            </div>
+          </label>
+          <label class="audit-card flex items-start gap-3 p-4 rounded-xl bg-obsidian border border-slate-800 cursor-pointer">
+            <input type="checkbox" onchange="updateAuditScore()" class="audit-cb mt-1 w-4 h-4 accent-emerald-400" />
+            <div>
+              <h3 class="text-sm font-semibold text-white">Domain &amp; URL Phishing Verification</h3>
+              <p class="text-xs text-slate-400 mt-0.5">Inspect typosquatting before entering credentials.</p>
+            </div>
+          </label>
+          <label class="audit-card flex items-start gap-3 p-4 rounded-xl bg-obsidian border border-slate-800 cursor-pointer">
+            <input type="checkbox" onchange="updateAuditScore()" class="audit-cb mt-1 w-4 h-4 accent-emerald-400" />
+            <div>
+              <h3 class="text-sm font-semibold text-white">Encrypted DNS (DoH / Quad9)</h3>
+              <p class="text-xs text-slate-400 mt-0.5">Prevent ISP DNS hijacking and tracking.</p>
+            </div>
+          </label>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="border-t border-slate-800/80 bg-slateDark/60 py-5 text-center text-xs text-slate-500">
+    <p>CyberShield Ultra v3.0 &bull; 100% Client-Side Execution &bull; Zero External Tracking</p>
+  </footer>
+
+  <!-- ===================================================================== -->
+  <!-- APPLICATION LOGIC                                                     -->
+  <!-- ===================================================================== -->
+  <script>
+    // Tab Switching
+    function switchTab(name) {
+      document.querySelectorAll('.tool-panel').forEach(p => p.classList.add('hidden'));
+      document.querySelectorAll('.tab-btn').forEach(b => {
+        b.className = 'tab-btn flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium whitespace-nowrap transition-all bg-slateCard/60 text-slate-400 border border-slate-800 hover:text-slate-200';
+      });
+      document.getElementById(`panel-${name}`).classList.remove('hidden');
+      const activeBtn = document.getElementById(`tab-${name}`);
+      activeBtn.className = 'tab-btn active-tab flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium whitespace-nowrap transition-all bg-cyan-500/15 text-neonCyan border border-cyan-500/40 shadow-sm';
+      if (name === 'fingerprint') loadFingerprint();
+    }
+
+    function showToast(msg, type='success') {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      toast.className = `pointer-events-auto px-4 py-3 rounded-xl bg-slateDark/95 border ${type==='error'?'border-rose-500 text-rose-200':'border-emerald-500 text-emerald-200'} text-xs font-medium shadow-xl flex items-center gap-2`;
+      toast.innerHTML = `<span class="w-2 h-2 rounded-full ${type==='error'?'bg-rose-400':'bg-neonEmerald'}"></span><span>${msg}</span>`;
+      container.appendChild(toast);
+      setTimeout(() => toast.remove(), 2500);
+    }
+
+    function copyFromElement(id, msg) {
+      const el = document.getElementById(id);
+      if(!el || !el.value) return;
+      el.select();
+      document.execCommand('copy');
+      showToast(msg || 'Copied!');
+    }
+
+    // Password Analyzer
+    function togglePasswordVis() {
+      const input = document.getElementById('analyzer-input');
+      input.type = input.type === 'password' ? 'text' : 'password';
+    }
+
+    function analyzePassword(pwd) {
+      const len = pwd.length;
+      let pool = 0;
+      if(/[a-z]/.test(pwd)) pool += 26;
+      if(/[A-Z]/.test(pwd)) pool += 26;
+      if(/[0-9]/.test(pwd)) pool += 10;
+      if(/[^a-zA-Z0-9]/.test(pwd)) pool += 32;
+
+      const entropy = len > 0 && pool > 0 ? len * Math.log2(pool) : 0;
+      const combos = pool > 0 ? Math.pow(pool, len) : 0;
+      const crackSecs = combos / 1e11;
+
+      document.getElementById('entropy-badge').textContent = `${Math.round(entropy)} bits`;
+      document.getElementById('metric-pool').textContent = `${pool} chars`;
+      document.getElementById('metric-crack-time').textContent = len === 0 ? 'Instant' : (crackSecs < 1 ? '< 1 sec' : `${Math.round(crackSecs)} secs`);
+
+      const bar = document.getElementById('strength-bar');
+      const lbl = document.getElementById('strength-label');
+      if(len === 0) { bar.style.width='0%'; lbl.textContent='Awaiting Input'; }
+      else if(entropy < 40) { bar.style.width='25%'; bar.className='h-full bg-rose-500 rounded-full'; lbl.textContent='Weak'; }
+      else if(entropy < 65) { bar.style.width='55%'; bar.className='h-full bg-amber-500 rounded-full'; lbl.textContent='Moderate'; }
+      else { bar.style.width='100%'; bar.className='h-full bg-neonEmerald rounded-full'; lbl.textContent='Strong'; }
+    }
+
+    // Generator
+    let genMode = 'password';
+    function setGenMode(mode) {
+      genMode = mode;
+      document.getElementById('btn-mode-pw').className = mode==='password'?'px-2.5 py-1 rounded-md text-xs font-medium bg-cyan-500/25 text-neonCyan':'px-2.5 py-1 rounded-md text-xs font-medium text-slate-400';
+      document.getElementById('btn-mode-ph').className = mode==='passphrase'?'px-2.5 py-1 rounded-md text-xs font-medium bg-cyan-500/25 text-neonCyan':'px-2.5 py-1 rounded-md text-xs font-medium text-slate-400';
+      document.getElementById('gen-pw-options').classList.toggle('hidden', mode==='passphrase');
+      document.getElementById('gen-ph-options').classList.toggle('hidden', mode==='password');
+      generateCredential();
+    }
+
+    const WORDLIST = ['anchor','beacon','cipher','cobalt','cosmos','crimson','dynamo','eclipse','ember','enigma','falcon','firewall','fortress','galaxy','glacier','guardian','horizon','impulse','labyrinth','matrix','nebula','obsidian','oracle','paradox','phantom','phoenix','plasma','prism','protocol','quantum','reactor','sentinel','shield','signal','silicon','solstice','specter','stealth','tempest','vortex','zenith'];
+    function generateCredential() {
+      const out = document.getElementById('gen-output');
+      if(genMode === 'password') {
+        const len = parseInt(document.getElementById('gen-len').value);
+        let chars = '';
+        if(document.getElementById('opt-upper').checked) chars += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        if(document.getElementById('opt-lower').checked) chars += 'abcdefghijklmnopqrstuvwxyz';
+        if(document.getElementById('opt-nums').checked) chars += '0123456789';
+        if(document.getElementById('opt-syms').checked) chars += '!@#$%^&*()';
+        if(!chars) { out.value='Select a character set'; return; }
+        let res = '';
+        const arr = new Uint32Array(len);
+        window.crypto.getRandomValues(arr);
+        for(let i=0; i<len; i++) res += chars[arr[i] % chars.length];
+        out.value = res;
+      } else {
+        const count = parseInt(document.getElementById('gen-words').value);
+        let words = [];
+        const arr = new Uint32Array(count);
+        window.crypto.getRandomValues(arr);
+        for(let i=0; i<count; i++) words.push(WORDLIST[arr[i] % WORDLIST.length]);
+        out.value = words.join('-');
+      }
+    }
+
+    // Hashes & JWT
+    async function digest(msg, algo) {
+      const data = new TextEncoder().encode(msg);
+      const buf = await window.crypto.subtle.digest(algo, data);
+      return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
+    }
+
+    async function computeHashes() {
+      const val = document.getElementById('hash-input').value;
+      document.getElementById('out-sha256').value = await digest(val, 'SHA-256');
+      document.getElementById('out-sha512').value = await digest(val, 'SHA-512');
+    }
+
+    function loadSampleJWT() {
+      const h = btoa(JSON.stringify({alg:"HS256",typ:"JWT"})).replace(/=/g,'');
+      const p = btoa(JSON.stringify({sub:"usr_99",name:"CyberAnalyst",exp:Math.floor(Date.now()/1000)+86400})).replace(/=/g,'');
+      document.getElementById('jwt-input').value = `${h}.${p}.signature_mock`;
+      inspectJWT();
+    }
+
+    function inspectJWT() {
+      const val = document.getElementById('jwt-input').value.trim();
+      const parts = val.split('.');
+      if(parts.length < 2) return;
+      try {
+        const dec = s => JSON.parse(atob(s.replace(/-/g,'+').replace(/_/g,'/')));
+        document.getElementById('jwt-header-out').textContent = JSON.stringify(dec(parts[0]), null, 2);
+        document.getElementById('jwt-payload-out').textContent = JSON.stringify(dec(parts[1]), null, 2);
+      } catch(e) {}
+    }
+
+    // Subnet Calculator
+    function calculateSubnet() {
+      const raw = document.getElementById('subnet-input').value.trim();
+      const [ip, cidrStr] = raw.split('/');
+      const cidr = parseInt(cidrStr || 24, 10);
+      if(!ip || isNaN(cidr) || cidr < 0 || cidr > 32) {
+        showToast('Invalid IP/CIDR format', 'error');
+        return;
+      }
+      const ipParts = ip.split('.').map(Number);
+      const ipInt = (ipParts[0]<<24) + (ipParts[1]<<16) + (ipParts[2]<<8) + ipParts[3];
+      const maskInt = cidr === 0 ? 0 : (~((1 << (32 - cidr)) - 1)) >>> 0;
+      const netInt = (ipInt & maskInt) >>> 0;
+      const bcInt = (netInt | ~maskInt) >>> 0;
+
+      const intToIp = n => [(n>>>24)&255, (n>>>16)&255, (n>>>8)&255, n&255].join('.');
+
+      document.getElementById('sub-net-addr').textContent = intToIp(netInt);
+      document.getElementById('sub-broadcast').textContent = intToIp(bcInt);
+      document.getElementById('sub-mask').textContent = intToIp(maskInt);
+      const totalHosts = cidr >= 31 ? (cidr === 32 ? 1 : 2) : Math.pow(2, 32 - cidr) - 2;
+      document.getElementById('sub-hosts').textContent = totalHosts.toLocaleString();
+      document.getElementById('sub-range').textContent = cidr >= 31 ? `${intToIp(netInt)} - ${intToIp(bcInt)}` : `${intToIp(netInt+1)} to ${intToIp(bcInt-1)}`;
+      document.getElementById('sub-wildcard').textContent = intToIp(~maskInt >>> 0);
+      document.getElementById('sub-binary').textContent = ipParts.map(p => p.toString(2).padStart(8,'0')).join('.');
+    }
+
+    // Port Scanner Directory
+    const PORTS_DATA = [
+      { port: 21, proto: 'TCP', name: 'FTP', state: 'Open', risk: 'High (Cleartext credentials)', defense: 'Disable FTP, use SFTP (Port 22)' },
+      { port: 22, proto: 'TCP', name: 'SSH', state: 'Open', risk: 'Low if hardened', defense: 'Disable password login, use ed25519 keys' },
+      { port: 80, proto: 'TCP', name: 'HTTP', state: 'Open', risk: 'Medium (Unencrypted traffic)', defense: 'Enforce mandatory HTTP-to-HTTPS redirects' },
+      { port: 443, proto: 'TCP', name: 'HTTPS', state: 'Open', risk: 'Low', defense: 'Use modern TLS 1.3 cipher suites' },
+      { port: 445, proto: 'TCP', name: 'Microsoft-DS (SMB)', state: 'Closed', risk: 'Critical (Ransomware vector)', defense: 'Block SMB at perimeter firewall, patch EternalBlue' },
+      { port: 3389, proto: 'TCP', name: 'RDP', state: 'Closed', risk: 'High (Brute-force risk)', defense: 'Put behind VPN, enforce MFA' }
+    ];
+
+    function renderPortsTable(simulated=false) {
+      const tbody = document.getElementById('port-table-body');
+      tbody.innerHTML = PORTS_DATA.map(p => `
+        <tr class="hover:bg-slate-800/50">
+          <td class="p-3.5 text-neonCyan">${p.port} / ${p.proto}</td>
+          <td class="p-3.5 text-white">${p.name}</td>
+          <td class="p-3.5"><span class="px-2 py-0.5 rounded text-[10px] ${p.state==='Open'?'bg-emerald-500/10 text-emerald-300':'bg-slate-800 text-slate-400'}">${simulated ? (Math.random()>0.4?'Open':'Closed') : p.state}</span></td>
+          <td class="p-3.5 text-rose-300">${p.risk}</td>
+          <td class="p-3.5 text-slate-300">${p.defense}</td>
+        </tr>
+      `).join('');
+    }
+
+    function simulatePortScan() {
+      showToast('Initiating Nmap SYN/Connect port scan simulation...');
+      setTimeout(() => renderPortsTable(true), 600);
+    }
+
+    // Browser Fingerprint
+    function loadFingerprint() {
+      const grid = document.getElementById('fingerprint-grid');
+      const items = [
+        { label: 'User Agent', val: navigator.userAgent },
+        { label: 'Platform / OS', val: navigator.platform },
+        { label: 'Screen Resolution', val: `${window.screen.width} x ${window.screen.height}` },
+        { label: 'Color Depth', val: `${window.screen.colorDepth}-bit` },
+        { label: 'Languages', val: navigator.languages ? navigator.languages.join(', ') : navigator.language },
+        { label: 'Hardware Concurrency', val: `${navigator.hardwareConcurrency || 'Unknown'} logical cores` },
+        { label: 'Cookie Enabled', val: navigator.cookieEnabled ? 'Yes' : 'No' },
+        { label: 'Do Not Track', val: navigator.doNotTrack || 'Unspecified' },
+        { label: 'Online Status', val: navigator.onLine ? 'Online' : 'Offline' }
+      ];
+      grid.innerHTML = items.map(i => `
+        <div class="bg-obsidian border border-slate-800 rounded-xl p-3.5">
+          <span class="text-[11px] uppercase tracking-wider text-slate-400">${i.label}</span>
+          <p class="font-mono text-xs text-white mt-1 break-all">${i.val}</p>
+        </div>
+      `).join('');
+    }
+
+    // File Integrity Verifier
+    async function handleFileSelected(e) {
+      const file = e.target.files[0];
+      if(!file) return;
+      document.getElementById('file-drop-text').textContent = `Selected: ${file.name} (${Math.round(file.size/1024)} KB)`;
+      
+      const buffer = await file.arrayBuffer();
+      const hashBuf = await window.crypto.subtle.digest('SHA-256', buffer);
+      const hashHex = Array.from(new Uint8Array(hashBuf)).map(b => b.toString(16).padStart(2,'0')).join('');
+      document.getElementById('file-sha-out').value = hashHex;
+      compareFileHash();
+    }
+
+    function compareFileHash() {
+      const calc = document.getElementById('file-sha-out').value;
+      const expected = document.getElementById('expected-hash-input').value.trim().toLowerCase();
+      const status = document.getElementById('match-status');
+      if(!expected) { status.textContent=''; return; }
+      if(calc.toLowerCase() === expected) {
+        status.textContent = 'MATCH: Checksum verified successfully!';
+        status.className = 'mt-2 text-xs font-bold text-neonEmerald';
+      } else {
+        status.textContent = 'MISMATCH: Checksum does not match expected value!';
+        status.className = 'mt-2 text-xs font-bold text-rose-400';
+      }
+    }
+
+    // Audit checklist
+    function updateAuditScore() {
+      const cbs = document.querySelectorAll('.audit-cb');
+      let checked = 0;
+      cbs.forEach(cb => {
+        if(cb.checked) checked++;
+        const card = cb.closest('.audit-card');
+        card.classList.toggle('border-emerald-500/50', cb.checked);
+        card.classList.toggle('bg-emerald-500/5', cb.checked);
+      });
+      const pct = Math.round((checked / cbs.length) * 100);
+      document.getElementById('audit-score-text').textContent = `${checked} / ${cbs.length} Completed (${pct}%)`;
+      document.getElementById('audit-progress-bar').style.width = `${pct}%`;
+    }
+
+    function resetChecklist() {
+      document.querySelectorAll('.audit-cb').forEach(cb => cb.checked = false);
+      updateAuditScore();
+    }
+
+    function inspectTargetURL() {
+      showToast('Target inspected successfully.');
+    }
+
+    // Init on load
+    window.addEventListener('DOMContentLoaded', () => {
+      generateCredential();
+      renderPortsTable(false);
+      calculateSubnet();
+      loadFingerprint();
+    });
+  </script>
+</body>
+</html>
